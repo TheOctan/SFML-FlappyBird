@@ -1,0 +1,99 @@
+#pragma once
+
+#ifndef ENGINE_GAME_HPP
+#define ENGINE_GAME_HPP
+
+////////////////////////////////////////////////////////////
+// Headers
+////////////////////////////////////////////////////////////
+#include<memory>
+#include<string>
+#include<vector>
+#include<SFML\Graphics.hpp>
+#include"Engine.h"
+
+namespace Engine
+{
+	////////////////////////////////////////////////////////////
+	/// \brief State of the game
+	///
+	////////////////////////////////////////////////////////////
+	enum class GameStates
+	{
+		Ready,
+		Playing,
+		GameOver
+	};
+
+	////////////////////////////////////////////////////////////
+	/// \brief State of the bird
+	///
+	////////////////////////////////////////////////////////////
+	enum class BirdState
+	{
+		Still = 1,
+		Falling,
+		Flying
+	};
+
+	////////////////////////////////////////////////////////////
+	/// \brief GameData is the core of the game
+	///
+	////////////////////////////////////////////////////////////
+	struct GameData
+	{
+		StateMachine machine;			//state machine of game logic
+		sf::RenderWindow window;		//main window for rendering
+		AssetManager assets;			//resourse manager
+		InputManager input;				//interaction with a game
+	};
+
+	// Create typedef for shared pointer of core of the game
+	typedef std::shared_ptr<GameData>	GameDataRef;
+
+	// Create typedef for vector of resources
+	typedef std::vector<sf::Sprite>		SpriteHolder;
+	typedef std::vector<sf::Texture>	TextureHolder;
+
+	////////////////////////////////////////////////////////////
+	/// \brief Play of the Game
+	///
+	////////////////////////////////////////////////////////////
+	class Game
+	{
+	public:
+		
+		////////////////////////////////////////////////////////////
+		/// \brief Constructor build the game and status assignment
+		///
+		/// \param width		Width of the window
+		/// \param height		Height of the window
+		/// \param title			Title of the window
+		///
+		////////////////////////////////////////////////////////////
+		Game(int width, int height, std::string title);
+
+	private:
+
+		////////////////////////////////////////////////////////////
+		/// \brief Start and processing logic, render of the game
+		///
+		////////////////////////////////////////////////////////////
+		void Run();
+
+	private:
+
+		////////////////////////////////////////////////////////////
+		// Member data
+		////////////////////////////////////////////////////////////
+		const float dt;				//frame duration
+		sf::Clock _clock;			//game synchronizer
+
+		GameDataRef _data;			//core of the game
+	};
+
+} //namespace Engine
+
+#endif // !ENGINE_GAME_HPP
+
+
